@@ -1,0 +1,169 @@
+{
+  "createValidAndBoundaryCases": [
+    {
+      "testCase": "valid_zero_available_copies_lower_boundary",
+      "availableCopies": 0,
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "valid_single_available_copy",
+      "availableCopies": 1,
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "valid_standard_stock_copies",
+      "availableCopies": 25,
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "valid_large_stock_copies",
+      "availableCopies": 10000,
+      "expectedStatus": 201
+    }
+  ],
+  "createInvalidAndOutOfBoundsCases": [
+    {
+      "testCase": "invalid_negative_one_available_copies",
+      "requiresValidBookId": true,
+      "payload": {
+        "availableCopies": -1
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_large_negative_available_copies",
+      "requiresValidBookId": true,
+      "payload": {
+        "availableCopies": -100
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_null_available_copies",
+      "requiresValidBookId": true,
+      "payload": {
+        "availableCopies": null
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_missing_available_copies_field",
+      "requiresValidBookId": true,
+      "payload": {},
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_null_book_id",
+      "requiresValidBookId": false,
+      "payload": {
+        "bookId": null,
+        "availableCopies": 5
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_missing_book_id_field",
+      "requiresValidBookId": false,
+      "payload": {
+        "availableCopies": 5
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_empty_json_object",
+      "requiresValidBookId": false,
+      "payload": {},
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_string_type_in_available_copies",
+      "requiresValidBookId": true,
+      "payload": {
+        "availableCopies": "five"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_string_type_in_book_id",
+      "requiresValidBookId": false,
+      "payload": {
+        "bookId": "abc",
+        "availableCopies": 5
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_array_type_in_available_copies",
+      "requiresValidBookId": true,
+      "payload": {
+        "availableCopies": [10]
+      },
+      "expectedStatus": 400
+    }
+  ],
+  "updateValidAndBoundaryCases": [
+    {
+      "testCase": "update_valid_zero_copies_out_of_stock_boundary",
+      "payload": {
+        "availableCopies": 0
+      },
+      "expectedStatus": 200
+    },
+    {
+      "testCase": "update_valid_single_copy",
+      "payload": {
+        "availableCopies": 1
+      },
+      "expectedStatus": 200
+    },
+    {
+      "testCase": "update_valid_restock_copies",
+      "payload": {
+        "availableCopies": 150
+      },
+      "expectedStatus": 200
+    }
+  ],
+  "updateInvalidCases": [
+    {
+      "testCase": "update_invalid_negative_one_copies",
+      "payload": {
+        "availableCopies": -1
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_large_negative_copies",
+      "payload": {
+        "availableCopies": -50
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_null_copies",
+      "payload": {
+        "availableCopies": null
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_empty_json_object",
+      "payload": {},
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_string_type_in_copies",
+      "payload": {
+        "availableCopies": "twenty"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_object_type_in_copies",
+      "payload": {
+        "availableCopies": { "count": 5 }
+      },
+      "expectedStatus": 400
+    }
+  ]
+}

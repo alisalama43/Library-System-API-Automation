@@ -1,0 +1,9 @@
+﻿target/
+test-output/
+!test-output/testng-results.xml
+allure-results/
+allure-report/
+.idea/
+*.iml
+*.log
+.DS_Store

@@ -1,0 +1,70 @@
+{
+  "createValidCases": [
+    {
+      "testCase": "valid_borrow_available_book",
+      "initialStock": 5,
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "valid_borrow_last_single_copy",
+      "initialStock": 1,
+      "expectedStatus": 201
+    }
+  ],
+  "createInvalidCases": [
+    {
+      "testCase": "invalid_null_book_id",
+      "payload": {
+        "bookId": null
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_missing_book_id_field",
+      "payload": {},
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_negative_book_id",
+      "payload": {
+        "bookId": -1
+      },
+      "expectedStatus": 404
+    },
+    {
+      "testCase": "invalid_zero_book_id",
+      "payload": {
+        "bookId": 0
+      },
+      "expectedStatus": 404
+    },
+    {
+      "testCase": "invalid_string_type_in_book_id",
+      "payload": {
+        "bookId": "abc"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_array_type_in_book_id",
+      "payload": {
+        "bookId": [1]
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_object_type_in_book_id",
+      "payload": {
+        "bookId": { "id": 1 }
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "non_existent_book_id",
+      "payload": {
+        "bookId": 9999999
+      },
+      "expectedStatus": 404
+    }
+  ]
+}

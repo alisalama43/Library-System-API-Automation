@@ -1,0 +1,209 @@
+{
+  "createValidAndBoundaryCases": [
+    {
+      "testCase": "valid_full_category",
+      "makeNameUnique": true,
+      "payload": {
+        "name": "Science Fiction",
+        "description": "Novels and stories exploring futuristic science and space"
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "valid_optional_description_null",
+      "makeNameUnique": true,
+      "payload": {
+        "name": "Biography",
+        "description": null
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "boundary_name_min_1_char",
+      "makeNameUnique": false,
+      "payload": {
+        "name": "Q",
+        "description": "Minimum single letter category name boundary"
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "boundary_name_exact_100_chars",
+      "makeNameUnique": false,
+      "payload": {
+        "name": "CategoryNameBoundaryTestExactHundredCharactersLengthVerificationAbcdefghijklmnopqrstuvwxyzAbcdefghij",
+        "description": "Exact one hundred letter name upper boundary"
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCase": "boundary_description_exact_500_chars",
+      "makeNameUnique": true,
+      "payload": {
+        "name": "Max Description Boundary",
+        "description": "AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghij"
+      },
+      "expectedStatus": 201
+    }
+  ],
+  "createInvalidAndOutOfBoundsCases": [
+    {
+      "testCase": "invalid_name_empty_string",
+      "payload": {
+        "name": "",
+        "description": "Valid description with empty name"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_name_whitespace_only",
+      "payload": {
+        "name": "     ",
+        "description": "Valid description with blank whitespace name"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_name_null",
+      "payload": {
+        "name": null,
+        "description": "Valid description with null name"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_missing_name_field",
+      "payload": {
+        "description": "Payload missing required name field"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_empty_json_object",
+      "payload": {},
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_name_contains_numbers",
+      "payload": {
+        "name": "Fiction 2026",
+        "description": "Valid description text"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_name_contains_special_characters",
+      "payload": {
+        "name": "Sci_Fi & Fantasy!",
+        "description": "Valid description text"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_name_contains_multiple_spaces",
+      "payload": {
+        "name": "Science  Fiction",
+        "description": "Valid description text"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_description_contains_numbers",
+      "payload": {
+        "name": "Valid Category Name",
+        "description": "Description with 123 digits"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_description_contains_special_characters",
+      "payload": {
+        "name": "Another Valid Name",
+        "description": "Description with hyphen-symbol"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "boundary_name_exceeds_101_chars",
+      "payload": {
+        "name": "CategoryNameBoundaryTestExactHundredCharactersLengthVerificationAbcdefghijklmnopqrstuvwxyzAbcdefghijk",
+        "description": "Valid description text"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "boundary_description_exceeds_501_chars",
+      "payload": {
+        "name": "Description Exceeds Max Limit",
+        "description": "AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijX"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_array_type_in_name",
+      "payload": {
+        "name": ["InvalidArrayName"],
+        "description": "Invalid data type for name"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "invalid_object_type_in_description",
+      "payload": {
+        "name": "Valid Name Invalid Desc Type",
+        "description": { "nested": "object" }
+      },
+      "expectedStatus": 400
+    }
+  ],
+  "updateInvalidCases": [
+    {
+      "testCase": "update_invalid_empty_name",
+      "payload": {
+        "name": "",
+        "description": "Valid description"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_whitespace_name",
+      "payload": {
+        "name": "   ",
+        "description": "Valid description"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_null_name",
+      "payload": {
+        "name": null,
+        "description": "Valid description"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_invalid_name_with_numbers",
+      "payload": {
+        "name": "History 101",
+        "description": "Valid description"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_boundary_name_exceeds_101_chars",
+      "payload": {
+        "name": "CategoryNameBoundaryTestExactHundredCharactersLengthVerificationAbcdefghijklmnopqrstuvwxyzAbcdefghijk",
+        "description": "Valid description on update"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCase": "update_boundary_description_exceeds_501_chars",
+      "payload": {
+        "name": "Valid Update Name",
+        "description": "AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijX"
+      },
+      "expectedStatus": 400
+    }
+  ]
+}

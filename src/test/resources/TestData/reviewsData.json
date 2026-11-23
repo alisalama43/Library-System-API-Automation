@@ -1,0 +1,340 @@
+{
+  "getBookReviews": [
+    {
+      "testCaseId": "REV_GET_01",
+      "description": "Get reviews for a book that has existing reviews",
+      "bookId": 1,
+      "expectedStatus": 200
+    },
+    {
+      "testCaseId": "REV_GET_02",
+      "description": "Get reviews for a valid book with no reviews yet",
+      "bookId": 2,
+      "expectedStatus": 200
+    },
+    {
+      "testCaseId": "REV_GET_03",
+      "description": "Get reviews for a non-existent book ID returns empty list",
+      "bookId": 999999,
+      "expectedStatus": 200
+    }
+  ],
+  "getBookAverageRating": [
+    {
+      "testCaseId": "REV_AVG_01",
+      "description": "Get average rating for a book with reviews",
+      "bookId": 1,
+      "expectedStatus": 200,
+      "expectedType": "number"
+    },
+    {
+      "testCaseId": "REV_AVG_02",
+      "description": "Get average rating for a book with no reviews returns NA",
+      "bookId": 2,
+      "expectedStatus": 200,
+      "expectedAverageRating": "N/A"
+    }
+  ],
+  "createReview": [
+    {
+      "testCaseId": "REV_POST_01",
+      "description": "Create valid review with rating and comment for a purchased book",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 1,
+        "rating": 5,
+        "comment": "An unforgettable experience with incredible world building"
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCaseId": "REV_POST_02",
+      "description": "Create valid review without optional comment field",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 3,
+        "rating": 4
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCaseId": "REV_POST_03",
+      "description": "Boundary test minimum valid rating",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 4,
+        "rating": 1,
+        "comment": "Did not enjoy the pacing"
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCaseId": "REV_POST_04",
+      "description": "Boundary test exact 1000 characters comment",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 5,
+        "rating": 5,
+        "commentLength": 1000
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCaseId": "REV_POST_05",
+      "description": "Duplicate review user tries to review the same book twice",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 1,
+        "rating": 3,
+        "comment": "Second attempt on the same book"
+      },
+      "expectedStatus": 409
+    },
+    {
+      "testCaseId": "REV_POST_06",
+      "description": "Business rule violation user has not purchased or borrowed the book",
+      "userRole": "USER_WITHOUT_BOOK_HISTORY",
+      "payload": {
+        "bookId": 1,
+        "rating": 5,
+        "comment": "Trying to review without buying or borrowing"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_POST_07",
+      "description": "Validation error rating below minimum",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 1,
+        "rating": 0,
+        "comment": "Invalid low rating"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_POST_08",
+      "description": "Validation error rating above maximum",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 1,
+        "rating": 6,
+        "comment": "Invalid high rating"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_POST_09",
+      "description": "Validation error missing required bookId",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": null,
+        "rating": 4,
+        "comment": "Missing book ID"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_POST_10",
+      "description": "Validation error comment exceeds 1000 characters",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 1,
+        "rating": 4,
+        "commentLength": 1001
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_POST_11",
+      "description": "Non-existent book ID",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 999999,
+        "rating": 5,
+        "comment": "Book does not exist"
+      },
+      "expectedStatus": 404
+    },
+    {
+      "testCaseId": "REV_POST_12",
+      "description": "Unauthenticated request missing token",
+      "userRole": "NO_TOKEN",
+      "payload": {
+        "bookId": 1,
+        "rating": 5,
+        "comment": "Unauthorized review"
+      },
+      "expectedStatus": 403
+    },
+    {
+      "testCaseId": "REV_POST_13",
+      "description": "Create valid review for a borrowed book without purchase",
+      "userRole": "VERIFIED_BORROWER_ONLY",
+      "payload": {
+        "bookId": 6,
+        "rating": 4,
+        "comment": "Borrowed this book and enjoyed reading it"
+      },
+      "expectedStatus": 201
+    },
+    {
+      "testCaseId": "REV_POST_14",
+      "description": "Validation error comment contains numbers and special characters",
+      "userRole": "VERIFIED_BUYER_OR_BORROWER",
+      "payload": {
+        "bookId": 1,
+        "rating": 5,
+        "comment": "Great book 10/10!"
+      },
+      "expectedStatus": 400
+    }
+  ],
+  "updateReview": [
+    {
+      "testCaseId": "REV_PUT_01",
+      "description": "Author updates their own review successfully",
+      "userRole": "REVIEW_AUTHOR",
+      "reviewId": 1,
+      "payload": {
+        "rating": 4,
+        "comment": "Even better on the second read"
+      },
+      "expectedStatus": 200
+    },
+    {
+      "testCaseId": "REV_PUT_02",
+      "description": "Validation error invalid rating during update",
+      "userRole": "REVIEW_AUTHOR",
+      "reviewId": 1,
+      "payload": {
+        "rating": 0,
+        "comment": "Invalid rating update"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_PUT_03",
+      "description": "Validation error rating out of range during update",
+      "userRole": "REVIEW_AUTHOR",
+      "reviewId": 1,
+      "payload": {
+        "rating": 6,
+        "comment": "Rating too high"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_PUT_04",
+      "description": "Authorization error another user tries to edit review",
+      "userRole": "OTHER_CLIENT",
+      "reviewId": 1,
+      "payload": {
+        "rating": 1,
+        "comment": "Hacking someone else review"
+      },
+      "expectedStatus": 403
+    },
+    {
+      "testCaseId": "REV_PUT_05",
+      "description": "Authorization error admin tries to edit client review",
+      "userRole": "ADMIN",
+      "reviewId": 1,
+      "payload": {
+        "rating": 5,
+        "comment": "Admin edit attempt"
+      },
+      "expectedStatus": 403
+    },
+    {
+      "testCaseId": "REV_PUT_06",
+      "description": "Not found updating a non-existent review ID",
+      "userRole": "REVIEW_AUTHOR",
+      "reviewId": 999999,
+      "payload": {
+        "rating": 4,
+        "comment": "Review does not exist"
+      },
+      "expectedStatus": 404
+    },
+    {
+      "testCaseId": "REV_PUT_07",
+      "description": "Validation error comment with special characters during update",
+      "userRole": "REVIEW_AUTHOR",
+      "reviewId": 1,
+      "payload": {
+        "rating": 4,
+        "comment": "Updated rating 99%!"
+      },
+      "expectedStatus": 400
+    },
+    {
+      "testCaseId": "REV_PUT_08",
+      "description": "Unauthenticated request trying to update review",
+      "userRole": "NO_TOKEN",
+      "reviewId": 1,
+      "payload": {
+        "rating": 4,
+        "comment": "No token update"
+      },
+      "expectedStatus": 403
+    }
+  ],
+  "deleteReview": [
+    {
+      "testCaseId": "REV_DEL_01",
+      "description": "Authorization error another client tries to delete review",
+      "userRole": "OTHER_CLIENT",
+      "reviewId": 1,
+      "expectedStatus": 403
+    },
+    {
+      "testCaseId": "REV_DEL_02",
+      "description": "Author deletes their own review successfully",
+      "userRole": "REVIEW_AUTHOR",
+      "reviewId": 1,
+      "expectedStatus": 204
+    },
+    {
+      "testCaseId": "REV_DEL_03",
+      "description": "Admin deletes any user review successfully",
+      "userRole": "ADMIN",
+      "reviewId": 2,
+      "expectedStatus": 204
+    },
+    {
+      "testCaseId": "REV_DEL_04",
+      "description": "Not found deleting a non-existent review ID",
+      "userRole": "REVIEW_AUTHOR",
+      "reviewId": 999999,
+      "expectedStatus": 404
+    },
+    {
+      "testCaseId": "REV_DEL_05",
+      "description": "Unauthenticated request trying to delete review",
+      "userRole": "NO_TOKEN",
+      "reviewId": 1,
+      "expectedStatus": 403
+    }
+  ],
+  "getMyReviews": [
+    {
+      "testCaseId": "REV_MY_01",
+      "description": "Get all reviews written by the currently signed-in user",
+      "userRole": "REVIEW_AUTHOR",
+      "expectedStatus": 200
+    },
+    {
+      "testCaseId": "REV_MY_02",
+      "description": "Get reviews for a signed-in user with no reviews yet",
+      "userRole": "NEW_USER_NO_REVIEWS",
+      "expectedStatus": 200
+    },
+    {
+      "testCaseId": "REV_MY_03",
+      "description": "Unauthenticated access to my reviews",
+      "userRole": "NO_TOKEN",
+      "expectedStatus": 403
+    }
+  ]
+}

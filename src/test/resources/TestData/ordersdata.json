@@ -1,0 +1,118 @@
+{
+        "createValidCases": [
+                {
+                        "testCase": "valid_single_item_single_quantity",
+                        "initialStock": 5,
+                        "orderQuantity": 1,
+                        "bookPrice": 100.0,
+                        "expectedStatus": 201
+                },
+                {
+                        "testCase": "valid_single_item_multiple_quantity",
+                        "initialStock": 10,
+                        "orderQuantity": 4,
+                        "bookPrice": 75.5,
+                        "expectedStatus": 201
+                },
+                {
+                        "testCase": "valid_boundary_exact_full_stock_checkout",
+                        "initialStock": 3,
+                        "orderQuantity": 3,
+                        "bookPrice": 150.0,
+                        "expectedStatus": 201
+                }
+        ],
+        "createInvalidCases": [
+                {
+                        "testCase": "invalid_empty_items_array",
+                        "requiresValidBookId": false,
+                        "payload": {
+                                "items": []
+                        },
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_null_items_field",
+                        "requiresValidBookId": false,
+                        "payload": {
+                                "items": null
+                        },
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_missing_items_field",
+                        "requiresValidBookId": false,
+                        "payload": {},
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_zero_quantity",
+                        "requiresValidBookId": true,
+                        "quantity": 0,
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_negative_quantity",
+                        "requiresValidBookId": true,
+                        "quantity": -3,
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_null_quantity",
+                        "requiresValidBookId": true,
+                        "quantity": null,
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_null_book_id_in_item",
+                        "requiresValidBookId": false,
+                        "payload": {
+                                "items": [
+                                        {
+                                                "bookId": null,
+                                                "quantity": 1
+                                        }
+                                ]
+                        },
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_missing_book_id_in_item",
+                        "requiresValidBookId": false,
+                        "payload": {
+                                "items": [
+                                        {
+                                                "quantity": 1
+                                        }
+                                ]
+                        },
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "invalid_string_type_in_quantity",
+                        "requiresValidBookId": false,
+                        "payload": {
+                                "items": [
+                                        {
+                                                "bookId": 1,
+                                                "quantity": "two"
+                                        }
+                                ]
+                        },
+                        "expectedStatus": 400
+                },
+                {
+                        "testCase": "non_existent_book_id_in_item",
+                        "requiresValidBookId": false,
+                        "payload": {
+                                "items": [
+                                        {
+                                                "bookId": 9999999,
+                                                "quantity": 1
+                                        }
+                                ]
+                        },
+                        "expectedStatus": 404
+                }
+        ]
+}

@@ -1,0 +1,96 @@
+{
+  "registerCases": [
+    {
+      "testCaseName": "Valid Client Registration",
+      "fullName": "Ann Ali",
+      "emailPrefix": "valid_client",
+      "password": "secret123",
+      "expectedStatusCode": 200,
+      "expectedError": null
+    },
+    {
+      "testCaseName": "Empty Full Name",
+      "fullName": "",
+      "emailPrefix": "empty_name",
+      "password": "secret123",
+      "expectedStatusCode": 400,
+      "expectedError": "Validation Failed"
+    },
+    {
+      "testCaseName": "Invalid Email Format",
+      "fullName": "Test User",
+      "emailPrefix": "invalid-email-format",
+      "password": "secret123",
+      "expectedStatusCode": 400,
+      "expectedError": "Validation Failed"
+    },
+    {
+      "testCaseName": "Short Password Less Than 6 Chars",
+      "fullName": "Test User",
+      "emailPrefix": "short_pass",
+      "password": "12345",
+      "expectedStatusCode": 400,
+      "expectedError": "Validation Failed"
+    }
+  ],
+  "loginCases": [
+    {
+      "testCaseName": "Wrong Password",
+      "useValidUser": true,
+      "email": "",
+      "password": "wrongPassword123",
+      "expectedStatusCode": 401,
+      "expectedError": "Unauthorized"
+    },
+    {
+      "testCaseName": "Non-Existent Email",
+      "useValidUser": false,
+      "email": "notfound_999999@test.com",
+      "password": "secret123",
+      "expectedStatusCode": 401,
+      "expectedError": "Unauthorized"
+    },
+    {
+      "testCaseName": "Blank Email and Password",
+      "useValidUser": false,
+      "email": "",
+      "password": "",
+      "expectedStatusCode": 400,
+      "expectedError": "Validation Failed"
+    },
+    {
+      "testCaseName": "Valid Client Login",
+      "useValidUser": true,
+      "email": "",
+      "password": "secret123",
+      "expectedStatusCode": 200,
+      "expectedError": null
+    }
+  ],
+  "adminRegisterCases": [
+    {
+      "testCaseName": "Valid Admin Creation by Admin",
+      "fullName": "Library Admin",
+      "emailPrefix": "new_admin",
+      "password": "strongPassword123",
+      "roleToken": "ADMIN",
+      "expectedStatusCode": 201
+    },
+    {
+      "testCaseName": "Admin Creation Forbidden for Client",
+      "fullName": "Unauthorized Admin",
+      "emailPrefix": "unauth_admin",
+      "password": "strongPassword123",
+      "roleToken": "CLIENT",
+      "expectedStatusCode": 403
+    },
+    {
+      "testCaseName": "Admin Creation Short Password",
+      "fullName": "Weak Admin",
+      "emailPrefix": "weak_admin",
+      "password": "123",
+      "roleToken": "ADMIN",
+      "expectedStatusCode": 400
+    }
+  ]
+}
